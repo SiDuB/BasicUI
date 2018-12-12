@@ -1,9 +1,9 @@
 -- saved variables
 BASICFONT = BASICFONT or {}
 
-BASICFONT["N"] = [[Interface\AddOns\BasicUI\Media\Expressway_Free_NORMAL.ttf]]	or "WoW Default"
-BASICFONT["B"] = [[Interface\AddOns\BasicUI\Media\Expressway_Rg_BOLD.ttf]]	 	or "WoW Default"
-BASICFONT["I"] = [[Interface\AddOns\BasicUI\Media\Expressway_Sb_ITALIC.ttf]] 	or "WoW Default"
+BASICFONT["N"] = [[_retail_\Interface\AddOns\BasicUI\Media\Expressway_Free_NORMAL.ttf]]	or "WoW Default"
+BASICFONT["B"] = [[_retail_\Interface\AddOns\BasicUI\Media\Expressway_Rg_BOLD.ttf]]	 	or "WoW Default"
+BASICFONT["I"] = [[_retail_\Interface\AddOns\BasicUI\Media\Expressway_Sb_ITALIC.ttf]] 	or "WoW Default"
 
 ----- Begin code taken by "http://www.wowinterface.com/downloads/info8786-tekticles.html"
 -- by Tekkub: http://www.tekkub.net/addons

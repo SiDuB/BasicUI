@@ -192,7 +192,7 @@ function MODULE:CreatePanels()
 	DataP1:SetPoint("BOTTOM", DataP2, "TOP", 0, 0)
 	DataP1:SetWidth(1200 / 3)
 	DataP1:SetBackdrop({ 
-		bgFile = [[Interface\DialogFrame\UI-DialogBox-Background-Dark]], 
+		bgFile = [[_retail_\Interface\DialogFrame\UI-DialogBox-Background-Dark]], 
 	})
 	DataP1:SetBackdropColor(0, 0, 0, 0.60)
 	DataP1:RegisterEvent("PLAYER_ENTERING_WORLD")
@@ -212,7 +212,7 @@ function MODULE:CreatePanels()
 	DataP2:SetPoint("BOTTOM", DataP3, "TOP", 0, 0)
 	DataP2:SetWidth(1200 / 3)
 	DataP2:SetBackdrop({ 
-		bgFile = [[Interface\DialogFrame\UI-DialogBox-Background-Dark]], 
+		bgFile = [[_retail_\Interface\DialogFrame\UI-DialogBox-Background-Dark]], 
 	})
 	DataP2:SetBackdropColor(0, 0, 0, 0.60)
 	
@@ -221,7 +221,7 @@ function MODULE:CreatePanels()
 	DataP3:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", 15, 5)
 	DataP3:SetWidth(1200 / 3)
 	DataP3:SetBackdrop({ 
-		bgFile = [[Interface\DialogFrame\UI-DialogBox-Background-Dark]], 
+		bgFile = [[_retail_\Interface\DialogFrame\UI-DialogBox-Background-Dark]], 
 	})
 	DataP3:SetBackdropColor(0, 0, 0, 0.60)
 	
@@ -229,7 +229,7 @@ function MODULE:CreatePanels()
 	-----------------------------------------------------------------------
 	DataBGP:SetAllPoints(DataP1)
 	DataBGP:SetBackdrop({ 
-		bgFile = [[Interface\DialogFrame\UI-DialogBox-Background-Dark]], 
+		bgFile = [[_retail_\Interface\DialogFrame\UI-DialogBox-Background-Dark]], 
 	})
 	DataBGP:SetBackdropColor(0, 0, 0, 0.60)
 
@@ -552,10 +552,9 @@ function MODULE:CreateStats()
 			self:SetAllPoints(Text)
 
 			local myPlayerName  = UnitName("player")				
-			--if not BasicDB then BasicDB = {} end
-			if not db.Currency then db.Currency = {} end
-			if not db.Currency[myPlayerRealm] then db.Currency[myPlayerRealm]={} end
-			db.Currency[myPlayerRealm][myPlayerName] = GetMoney()	
+			if not BasicDB.Currency then BasicDB.Currency = {} end
+			if not BasicDB.Currency[myPlayerRealm] then BasicDB.Currency[myPlayerRealm]={} end
+			BasicDB.Currency[myPlayerRealm][myPlayerName] = GetMoney()	
 				
 			OldMoney = NewMoney	
 				
@@ -598,7 +597,7 @@ function MODULE:CreateStats()
 			
 			local totalGold = 0				
 			GameTooltip:AddLine("Character's: ")			
-			local thisRealmList = db.Currency[myPlayerRealm];
+			local thisRealmList = BasicDB.Currency[myPlayerRealm];
 			for k,v in pairs(thisRealmList) do
 				GameTooltip:AddDoubleLine(k, formatMoney(v), 1, 1, 1, 1, 1, 1)
 				totalGold=totalGold+v;
@@ -629,9 +628,9 @@ function MODULE:CreateStats()
 			local myPlayerRealm = GetRealmName();
 			local myPlayerName  = UnitName("player");
 			
-			db.Currency = {}
-			db.Currency[myPlayerRealm]={}
-			db.Currency[myPlayerRealm][myPlayerName] = GetMoney();
+			BasicDB.Currency = {}
+			BasicDB.Currency[myPlayerRealm]={}
+			BasicDB.Currency[myPlayerRealm][myPlayerName] = GetMoney();
 		end
 		SLASH_RESETCURRENCY1 = "/resetcurrency"
 		SlashCmdList["RESETCURRENCY"] = RESETCURRENCY	

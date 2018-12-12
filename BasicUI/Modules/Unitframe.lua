@@ -9,7 +9,7 @@ local defaults = {
 	profile = {
 		enable = true,
 		UnitScale = 1.2,
-		UnitframeFont = [[Interface\AddOns\BasicUI\Media\Expressway_Rg_BOLD.ttf]],
+		UnitframeFont = [[_retail_\Interface\AddOns\BasicUI\Media\Expressway_Rg_BOLD.ttf]],
 	},
 }
 

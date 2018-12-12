@@ -7,9 +7,9 @@ local L = BasicUI.L
 --	 Module Database
 ------------------------------------------------------------------------
 
-local BASIC_BORDER = [[Interface\Tooltips\UI-Tooltip-Border]]
-local BASIC_BACKGROUND = [[Interface\DialogFrame\UI-DialogBox-Background-Dark]]
-local BASIC_STATUSBAR = [[Interface\TargetingFrame\UI-StatusBar]]
+local BASIC_BORDER = [[_retail_\Interface\Tooltips\UI-Tooltip-Border]]
+local BASIC_BACKGROUND = [[_retail_\Interface\DialogFrame\UI-DialogBox-Background-Dark]]
+local BASIC_STATUSBAR = [[_retail_\Interface\TargetingFrame\UI-StatusBar]]
 
 local db
 local defaults = {
@@ -17,10 +17,6 @@ local defaults = {
 		enable = true,
 		fontSize = 15,
 		fontOutline = false,
-
-		position = {
-			"BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -39, 82
-		},
 
 		showOnMouseover = false,
 		hideInCombat = false,                       -- Hide unit frame tooltips during combat
@@ -180,9 +176,9 @@ function MODULE:OnEnable()
 	local UnitCreatureType = UnitCreatureType
 	local GetQuestDifficultyColor = GetQuestDifficultyColor
 
-	local tankIcon = "|TInterface\\LFGFrame\\UI-LFG-ICON-PORTRAITROLES.blp:13:13:0:0:64:64:0:19:22:41|t"
-	local healIcon = "|TInterface\\LFGFrame\\UI-LFG-ICON-PORTRAITROLES.blp:13:13:0:0:64:64:20:39:1:20|t"
-	local damagerIcon = "|TInterface\\LFGFrame\\UI-LFG-ICON-PORTRAITROLES.blp:13:13:0:0:64:64:20:39:22:41|t"
+	local tankIcon = "|T_retail_\\Interface\\LFGFrame\\UI-LFG-ICON-PORTRAITROLES.blp:13:13:0:0:64:64:0:19:22:41|t"
+	local healIcon = "|T_retail_\\Interface\\LFGFrame\\UI-LFG-ICON-PORTRAITROLES.blp:13:13:0:0:64:64:20:39:1:20|t"
+	local damagerIcon = "|T_retail_\\Interface\\LFGFrame\\UI-LFG-ICON-PORTRAITROLES.blp:13:13:0:0:64:64:20:39:22:41|t"
 
 		-- Some tooltip changes
 
@@ -198,7 +194,7 @@ function MODULE:OnEnable()
 	end
 
 	GameTooltipStatusBar:SetHeight(7)
-	GameTooltipStatusBar:SetBackdrop({bgFile = "Interface\\Buttons\\WHITE8x8"})
+	GameTooltipStatusBar:SetBackdrop({bgFile = "_retail_\\Interface\\Buttons\\WHITE8x8"})
 	GameTooltipStatusBar:SetBackdropColor(0, 1, 0, 0.3)
 
 	local function ApplyTooltipStyle(self)
@@ -221,7 +217,7 @@ function MODULE:OnEnable()
 
 		if not self.Background then
 			self.Background = self:CreateTexture(nil, "BACKGROUND", nil, 1)
-			self.Background:SetTexture("Interface\\Buttons\\WHITE8x8")
+			self.Background:SetTexture("_retail_\\Interface\\Buttons\\WHITE8x8")
 			self.Background:SetPoint("TOPLEFT", self, bgsize, -bgsize)
 			self.Background:SetPoint("BOTTOMRIGHT", self, -bgsize, bgsize)
 			self.Background:SetVertexColor(0.0, 0.0, 0.0, 0.60)
@@ -401,13 +397,13 @@ function MODULE:OnEnable()
 
 		if UnitIsPVPFreeForAll(unit) then
 			if db.showPVPIcons then
-				return CreateTextureMarkup("Interface\\AddOns\\BasicUI\\Media\\UI-PVP-FFA", 32,32, 16,16, 0,1,0,1, -2,-1)
+				return CreateTextureMarkup("_retail_\\Interface\\AddOns\\BasicUI\\Media\\UI-PVP-FFA", 32,32, 16,16, 0,1,0,1, -2,-1)
 			else
 				return "|cffFF0000# |r"
 			end
 		elseif factionGroup and UnitIsPVP(unit) then
 			if db.showPVPIcons then
-				return CreateTextureMarkup("Interface\\AddOns\\BasicUI\\Media\\UI-PVP-"..factionGroup, 32,32, 14,14, 0,1,0,1, -2,-1)
+				return CreateTextureMarkup("_retail_\\Interface\\AddOns\\BasicUI\\Media\\UI-PVP-"..factionGroup, 32,32, 14,14, 0,1,0,1, -2,-1)
 			else
 				return "|cff00FF00# |r"
 			end
@@ -603,12 +599,12 @@ function MODULE:OnEnable()
 		local anchorFrame = CreateFrame("Frame", "addon_Anchor", UIParent)
 		anchorFrame:SetSize(50, 50)
 		anchorFrame:SetScale(1.2)
-		anchorFrame:SetPoint(unpack(db.position))
+		anchorFrame:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -75, 75)
 		anchorFrame:SetFrameStrata("HIGH")
 		anchorFrame:SetMovable(true)
 		anchorFrame:SetClampedToScreen(true)
 		anchorFrame:SetUserPlaced(true)
-		anchorFrame:SetBackdrop({bgFile="Interface\\MINIMAP\\TooltipBackdrop-Background",})
+		anchorFrame:SetBackdrop({bgFile="_retail_\\Interface\\MINIMAP\\TooltipBackdrop-Background",})
 		anchorFrame:EnableMouse(true)
 		anchorFrame:RegisterForDrag("LeftButton")
 		anchorFrame:Hide()
