@@ -192,7 +192,7 @@ function MODULE:CreatePanels()
 	DataP1:SetPoint("BOTTOM", DataP2, "TOP", 0, 0)
 	DataP1:SetWidth(1200 / 3)
 	DataP1:SetBackdrop({ 
-		bgFile = [[_retail_\Interface\DialogFrame\UI-DialogBox-Background-Dark]], 
+		bgFile = [[Interface\DialogFrame\UI-DialogBox-Background-Dark]], 
 	})
 	DataP1:SetBackdropColor(0, 0, 0, 0.60)
 	DataP1:RegisterEvent("PLAYER_ENTERING_WORLD")
@@ -212,7 +212,7 @@ function MODULE:CreatePanels()
 	DataP2:SetPoint("BOTTOM", DataP3, "TOP", 0, 0)
 	DataP2:SetWidth(1200 / 3)
 	DataP2:SetBackdrop({ 
-		bgFile = [[_retail_\Interface\DialogFrame\UI-DialogBox-Background-Dark]], 
+		bgFile = [[Interface\DialogFrame\UI-DialogBox-Background-Dark]], 
 	})
 	DataP2:SetBackdropColor(0, 0, 0, 0.60)
 	
@@ -221,7 +221,7 @@ function MODULE:CreatePanels()
 	DataP3:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", 15, 5)
 	DataP3:SetWidth(1200 / 3)
 	DataP3:SetBackdrop({ 
-		bgFile = [[_retail_\Interface\DialogFrame\UI-DialogBox-Background-Dark]], 
+		bgFile = [[Interface\DialogFrame\UI-DialogBox-Background-Dark]], 
 	})
 	DataP3:SetBackdropColor(0, 0, 0, 0.60)
 	
@@ -229,7 +229,7 @@ function MODULE:CreatePanels()
 	-----------------------------------------------------------------------
 	DataBGP:SetAllPoints(DataP1)
 	DataBGP:SetBackdrop({ 
-		bgFile = [[_retail_\Interface\DialogFrame\UI-DialogBox-Background-Dark]], 
+		bgFile = [[Interface\DialogFrame\UI-DialogBox-Background-Dark]], 
 	})
 	DataBGP:SetBackdropColor(0, 0, 0, 0.60)
 
