@@ -481,8 +481,12 @@ function MODULE:CreateStats()
 		local Profit	= 0
 		local Spent		= 0
 		local OldMoney	= 0
+		local myPlayerName  = UnitName("player");
 		local myPlayerRealm = GetRealmName();
-		
+		local myPlayerFaction = UnitFactionGroup('player')
+		local iconAlliance = CreateTextureMarkup('Interface\\AddOns\\BasicUI\\Media\\Faction_Alliance_64.blp', 32,32, 14,14, 0,1,0,1, -2,-1)
+		local iconHorde = CreateTextureMarkup('Interface\\AddOns\\BasicUI\\Media\\Faction_Horde_64.blp', 32,32, 14,14, 0,1,0,1, -2,-1)
+		local iconNuetral = CreateTextureMarkup('Interface\\AddOns\\BasicUI\\Media\\Faction_Both_64.blp', 32,32, 14,14, 0,1,0,1, -2,-1)
 		
 		local function formatMoney(c)
 			local str = ""
@@ -536,27 +540,29 @@ function MODULE:CreateStats()
 				self:SetAllPoints(Text)
 				
 			end
-			if event == "PLAYER_ENTERING_WORLD" then
-				OldMoney = GetMoney()
-			end
-			
-			local NewMoney	= GetMoney()
-			local Change = NewMoney-OldMoney -- Positive if we gain money
-			
-			if OldMoney>NewMoney then		-- Lost Money
-				Spent = Spent - Change
-			else							-- Gained Money
-				Profit = Profit + Change
-			end
-			
-			self:SetAllPoints(Text)
+		if event == "PLAYER_ENTERING_WORLD" then
+			OldMoney = GetMoney()
+		end
+		
+		local NewMoney	= GetMoney()
+		
+		local Change = NewMoney - OldMoney -- Positive if we gain money
+		
+		if OldMoney>NewMoney then		-- Lost Money
+			Spent = Spent - Change
+		else							-- Gained Money
+			Profit = Profit + Change
+		end
+		
+		self:SetAllPoints(Text)
 
-			local myPlayerName  = UnitName("player")				
-			if not BasicDB.Currency then BasicDB.Currency = {} end
-			if not BasicDB.Currency[myPlayerRealm] then BasicDB.Currency[myPlayerRealm]={} end
-			BasicDB.Currency[myPlayerRealm][myPlayerName] = GetMoney()	
-				
-			OldMoney = NewMoney	
+		if not db then db = {} end					
+		if not db['Gold'] then db['Gold'] = {} end
+		if not db['Gold'][myPlayerRealm] then db['Gold'][myPlayerRealm] = {} end
+		if not db['Gold'][myPlayerRealm][myPlayerFaction] then db['Gold'][myPlayerRealm][myPlayerFaction] = {} end
+		db['Gold'][myPlayerRealm][myPlayerFaction][myPlayerName] = GetMoney()	
+			
+		OldMoney = NewMoney	
 				
 		end
 
@@ -583,28 +589,54 @@ function MODULE:CreateStats()
 			GameTooltip:SetOwner(panel, anchor, xoff, yoff)
 			GameTooltip:ClearLines()
 			GameTooltip:AddDoubleLine(hexa..PLAYER_NAME.."'s"..hexb.."|cffffd700 Gold|r", formatMoney(OldMoney), 1, 1, 1, 1, 1, 1)
-			GameTooltip:AddLine' '			
+			GameTooltip:AddLine(" ")			
 			GameTooltip:AddLine("This Session: ")				
 			GameTooltip:AddDoubleLine("Earned:", formatMoney(Profit), 1, 1, 1, 1, 1, 1)
 			GameTooltip:AddDoubleLine("Spent:", formatMoney(Spent), 1, 1, 1, 1, 1, 1)
 			if Profit < Spent then
-				GameTooltip:AddDoubleLine("Deficit:", formatMoney(Profit-Spent), 1, 0, 0, 1, 1, 1)
-			elseif (Profit-Spent)>0 then
-				GameTooltip:AddDoubleLine("Profit:", formatMoney(Profit-Spent), 0, 1, 0, 1, 1, 1)
-			end				
-			--GameTooltip:AddDoubleLine("Total:", formatMoney(OldMoney), 1, 1, 1, 1, 1, 1)
-			GameTooltip:AddLine' '
+				GameTooltip:AddDoubleLine("Deficit:", formatMoney(Spent - Profit), 1, 0, 0, 1, 1, 1)
+			elseif (Profit - Spent) > 0 then
+				GameTooltip:AddDoubleLine("Profit:", formatMoney(Profit - Spent), 0, 1, 0, 1, 1, 1)
+			end
+			GameTooltip:AddLine(" ")
 			
-			local totalGold = 0				
-			GameTooltip:AddLine("Character's: ")			
-			local thisRealmList = BasicDB.Currency[myPlayerRealm];
-			for k,v in pairs(thisRealmList) do
-				GameTooltip:AddDoubleLine(k, formatMoney(v), 1, 1, 1, 1, 1, 1)
-				totalGold=totalGold+v;
-			end  
-			GameTooltip:AddLine' '
-			GameTooltip:AddLine("Server:")
-			GameTooltip:AddDoubleLine("Total: ", formatMoney(totalGold), 1, 1, 1, 1, 1, 1)
+			local totalGold = 0
+			local totalAllianceGold = 0
+			local totalHordeGold = 0
+			local totalNeutralGold = 0
+			 
+			if db['Gold'][myPlayerRealm]['Alliance'] then     --so long as this will never have a value of false, you really only care if a value exists
+				GameTooltip:AddLine("Alliance Characters:")     --faction heading
+				for k,v in pairs(db['Gold'][myPlayerRealm]['Alliance']) do     --display all characters
+					GameTooltip:AddDoubleLine(iconAlliance..k, formatMoney(v), 1, 1, 1, 1, 1, 1)
+					totalAllianceGold = totalAllianceGold + v
+				end
+				GameTooltip:AddDoubleLine("Total Alliance Gold", formatMoney(totalAllianceGold))     --faction total
+				GameTooltip:AddLine(" ")     --add a spacer after this faction
+			end
+			 
+			if db['Gold'][myPlayerRealm]['Horde'] then
+				GameTooltip:AddLine("Horde Characters:")     --faction heading
+				for k,v in pairs(db['Gold'][myPlayerRealm]['Horde']) do     --display all characters
+					GameTooltip:AddDoubleLine(iconHorde..k, formatMoney(v), 1, 1, 1, 1, 1, 1)
+					totalHordeGold = totalHordeGold + v
+				end
+				GameTooltip:AddDoubleLine("Total Horde Gold", formatMoney(totalHordeGold))     --faction total
+				GameTooltip:AddLine(" ")     --add a spacer after this faction
+			end
+				
+			if db['Gold'][myPlayerRealm]['Neutral'] then
+				GameTooltip:AddLine("Neutral Characters:")     --faction heading
+				for k,v in pairs(db['Gold'][myPlayerRealm]['Neutral']) do     --display all characters
+					GameTooltip:AddDoubleLine(iconNuetral..k, formatMoney(v), 1, 1, 1, 1, 1, 1)
+					totalNeutralGold = totalNeutralGold + v
+				end
+				GameTooltip:AddDoubleLine("Total Neutral Gold", formatMoney(totalNeutralGold))     --faction total
+				GameTooltip:AddLine(" ")     --add a spacer after this faction
+			end
+						
+			local totalServerGold = totalAllianceGold + totalHordeGold + totalNeutralGold
+			GameTooltip:AddDoubleLine("Total Gold for "..myPlayerRealm, formatMoney(totalServerGold))     --server total			
 
 			for i = 1, GetNumWatchedTokens() do
 				local name, count, extraCurrencyType, icon, itemID = GetBackpackCurrencyInfo(i)
@@ -617,23 +649,11 @@ function MODULE:CreateStats()
 				if name and count then GameTooltip:AddDoubleLine(name, count, r, g, b, 1, 1, 1) end
 			end
 			GameTooltip:AddLine' '
-			GameTooltip:AddLine("|cffeda55fClick|r to Open Bags")
-			GameTooltip:AddLine("|cffeda55fType|r /resetcurrency to Reset Currency Totals")			
+			GameTooltip:AddLine("|cffeda55fClick|r to Open Bags")			
 			GameTooltip:Show()
 		end)
 		
-		bagsPlugin:SetScript("OnLeave", function() GameTooltip:Hide() end)			
-		-- reset gold data
-		local function RESETCURRENCY()
-			local myPlayerRealm = GetRealmName();
-			local myPlayerName  = UnitName("player");
-			
-			BasicDB.Currency = {}
-			BasicDB.Currency[myPlayerRealm]={}
-			BasicDB.Currency[myPlayerRealm][myPlayerName] = GetMoney();
-		end
-		SLASH_RESETCURRENCY1 = "/resetcurrency"
-		SlashCmdList["RESETCURRENCY"] = RESETCURRENCY	
+		bagsPlugin:SetScript("OnLeave", function() GameTooltip:Hide() end)				
 
 	end
 

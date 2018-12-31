@@ -1,7 +1,7 @@
-## Interface: 80000
+## Interface: 80100
 ## Title:|cff00B4FFBasic|rUI
 ## Author: SiDuB 
-## Version: 8.0.1
+## Version: 8.1.0
 ## Notes: SiDuB's Version of a Basic UserIterface.
 ## SavedVariables: BasicDB
 ## SavedVariablesPerCharacter: BasicDBPerCharacter
